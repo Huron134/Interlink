@@ -61,19 +61,20 @@ void get_line(struct column *table, FILE *fin){
     for (int j = 0; j < 3; j++){
         lexem[j] = get_lexem(fin);
     }
-
-    while (table->record[i] != NULL){
-        if (!strcmp(table->record[i], lexem[0])){
+    if (lexem[0][0] != '\0'){
+        while (table->record[i] != NULL){
+            if (!strcmp(table->record[i], lexem[0])){
+                if(table->next == NULL) table->next = add_column(lexem[1]);
+                add_record(table->next, i, lexem[1], lexem[2]);
+                p = 0;
+            }
+            i++;
+        }
+        if (p) {
+            table->record[i] = lexem[0];
             if(table->next == NULL) table->next = add_column(lexem[1]);
             add_record(table->next, i, lexem[1], lexem[2]);
-            p = 0;
         }
-        i++;
-    }
-    if (p) {
-        table->record[i] = lexem[0];
-        if(table->next == NULL) table->next = add_column(lexem[1]);
-        add_record(table->next, i, lexem[1], lexem[2]);
     }
 
     return;
